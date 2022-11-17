@@ -28,5 +28,7 @@
     <script src="{{ asset('backend/js/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('backend/js/adminlte.min.js') }}"></script>
+    <!-- Page specific script -->
+    @stack('other-scripts')
 </body>
 </html>

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +24,8 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/admin', [DashboardController::class, 'index'])->name('admin');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Dashboard
+Route::middleware(['auth', 'admin'])->prefix('admin')->namespace('admin')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('admin');
+    Route::get('/posts', [PostController::class, 'index'])->name('posts');    
+});
