@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Backend\DashboardController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,7 +22,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/admin', [App\Http\Controllers\Backend\DashboardController::class, 'index'])->name('admin');
+
+Route::get('/admin', [DashboardController::class, 'index'])->name('admin');
 
 Auth::routes();
 
