@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Post;
 
 class PostController extends Controller
 {
@@ -14,7 +15,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('backend.posts.index');
+        $posts = Post::orderBy('id', 'desc')
+                ->get();
+        // dd($posts);
+        return view('backend.posts.index', compact('posts'));
     }
 
     /**
@@ -46,7 +50,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Post::find($id);
+        //dd($post);
+        return view('backend.posts.show', compact('post'));
     }
 
     /**

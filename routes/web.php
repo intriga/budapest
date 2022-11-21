@@ -28,4 +28,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::middleware(['auth', 'admin'])->prefix('admin')->namespace('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('admin');
     Route::get('/posts', [PostController::class, 'index'])->name('posts');    
+    Route::get('/posts/{id}', [PostController::class, 'show']);      
 });
