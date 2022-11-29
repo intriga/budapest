@@ -40,10 +40,11 @@
 
                     <div class="card-tools">
                         <div class="input-group input-group-sm">
+                        
                         <input type="text" class="form-control" placeholder="Search Mail">
                         <div class="input-group-append">
                             <div class="btn btn-primary">
-                            <i class="fas fa-search"></i>
+                                <i class="fas fa-search"></i>
                             </div>
                         </div>
                         </div>
@@ -71,17 +72,17 @@
                         <button type="button" class="btn btn-default btn-sm">
                         <i class="fas fa-sync-alt"></i>
                         </button>
+                        <a href="{{ url('admin/post/create') }}" class="btn btn-sm btn-primary">
+                            Create
+                        </a>
+                        
+                        
                         <div class="float-right">
-                        1-50/200
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default btn-sm">
-                            <i class="fas fa-chevron-left"></i>
-                            </button>
-                            <button type="button" class="btn btn-default btn-sm">
-                            <i class="fas fa-chevron-right"></i>
-                            </button>
-                        </div>
-                        <!-- /.btn-group -->
+                            
+                            <div class="btn-group">                                                       
+                                {{ $posts->links() }}
+                            </div>
+                            <!-- /.btn-group -->
                         </div>
                         <!-- /.float-right -->
                     </div>
@@ -98,7 +99,7 @@
                                         </td>
                                         
                                         <td class="mailbox-name">
-                                            <a href="{{ url('admin/posts/'.$post->id) }}">{{ $post->title }}</a>
+                                            <a href="{{ url('admin/post/'.$post->id) }}">{{ $post->title }}</a>
                                         </td>
                                         <!-- <td class="mailbox-subject">{{ $post->body }}
                                         </td> -->
@@ -135,14 +136,15 @@
                         <i class="fas fa-sync-alt"></i>
                         </button>
                         <div class="float-right">
-                        1-50/200
+                        <!-- 1-50/200 -->
                         <div class="btn-group">
-                            <button type="button" class="btn btn-default btn-sm">
+                            <!-- <button type="button" class="btn btn-default btn-sm">
                             <i class="fas fa-chevron-left"></i>
                             </button>
                             <button type="button" class="btn btn-default btn-sm">
                             <i class="fas fa-chevron-right"></i>
-                            </button>
+                            </button> -->
+                            {{ $posts->links() }}
                         </div>
                         <!-- /.btn-group -->
                         </div>

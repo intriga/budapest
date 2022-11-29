@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -16,7 +17,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::orderBy('id', 'desc')
-                ->get();
+            ->simplePaginate(10);
         // dd($posts);
         return view('backend.posts.index', compact('posts'));
     }
@@ -28,7 +29,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.posts.create');
     }
 
     /**
@@ -39,7 +40,21 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $post = new Post();
+        $post->title = $request->input('title');
+        $post->slug = $request->input('slug');
+        $post->body = $request->input('body');
+
+        //$requestData = $request->all();        
+        $fileName = time().$request->file('image')->getClientOriginalName();
+        $path = $request->file('image')->storeAs('images', $fileName, 'public');
+        $post["image"] = '/storage/'.$path;
+        //dd($request->all());
+        
+        $post->save();
+
+      return redirect('/admin/posts');
     }
 
     /**
@@ -63,7 +78,9 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::find($id);
+        //dd($post);
+        return view('backend.posts.edit', compact('post'));
     }
 
     /**
@@ -75,7 +92,35 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = Post::find($id);
+        $post->title = $request->input('title');
+        $post->slug = $request->input('slug');
+        $post->body = $request->input('body');
+        $post->image = $request->input('image');
+        // $post->old_image = $request->input('old_image');
+        // dd($request->all());
+
+        if($request->hasFile('image')) {
+            $name = strtolower($request->file('image')->getClientOriginalName());
+            $file_name = $name;
+            $path = $request->file('image')->storeAs('images', $file_name, 'public');
+            $post->image = $file_name;
+            $Image = str_replace('/storage/' . $path, '/', $request->old_image);
+            dd($path);
+            
+            #Using storage
+            if(Storage::exists($Image)){
+                Storage::delete($Image);
+            }
+        }else {
+            $post->image = $request->old_image;
+        }
+        
+        
+        // dd($request->all());
+        $post->save();
+
+        return redirect('/admin/posts');
     }
 
     /**
@@ -86,6 +131,8 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::find($id);
+        $post->delete();
+        return redirect('/admin/posts');
     }
 }

@@ -28,5 +28,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::middleware(['auth', 'admin'])->prefix('admin')->namespace('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('admin');
     Route::get('/posts', [PostController::class, 'index'])->name('posts');    
-    Route::get('/posts/{id}', [PostController::class, 'show']);      
+    Route::get('/post/create', [PostController::class, 'create']);  
+    Route::post('/post/', [PostController::class, 'store']);    
+    Route::get('/post/{id}', [PostController::class, 'show']);      
+    Route::get('/post/{id}/edit', [PostController::class, 'edit']);      
+    Route::post('/post/{id}/edit', [PostController::class, 'update']);      
+    Route::delete('/post/{id}', [PostController::class, 'destroy']);      
 });

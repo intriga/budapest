@@ -10,61 +10,69 @@
     @include('backend.includes.sidebar')
     
     <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Compose</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Compose</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          
-        <div class="col-md-12">
-          <div class="card card-primary card-outline">
-            <div class="card-header">
-              <h3 class="card-title">{!! $post->title !!}</h3>
-
-              <div class="card-tools">
-                <a href="#" class="btn btn-tool" title="Previous"><i class="fas fa-chevron-left"></i></a>
-                <a href="#" class="btn btn-tool" title="Next"><i class="fas fa-chevron-right"></i></a>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1>Compose</h1>
+              </div>
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="{{ route('posts') }}">Posts</a></li>
+                  <li class="breadcrumb-item active">Compose</li>
+                </ol>
               </div>
             </div>
-            <!-- /.card-header -->
-            <div class="card-body p-0">
-                            
-              <div class="mailbox-read-message">
+          </div><!-- /.container-fluid -->
+        </section>
 
-                <p>{!! $post->body !!}</p>
+        <!-- Main content -->
+        <section class="content">
+          <div class="container-fluid">
+            <div class="row">
+              
+            <div class="col-md-12">
+              <div class="card card-primary card-outline">
+                <div class="card-header">
+                  <h3 class="card-title">{!! $post->title !!}</h3>
 
+                  <div class="card-tools">
+                    <a href="{{ url('/admin/post/'.$post->id.'/edit') }}" class="btn btn-tool" title="Previous">
+                      <button type="submit" class="btn btn-primary"><i class="far fa-envelope"></i> Edit</button>                    
+                    </a>
+                    <form action="{{ url('/admin/post/'.$post->id) }}" method="post">
+                        @csrf
+                        {{ method_field('delete')}}
+                        <button type="submit" class="btn btn-danger"><i class="nav-icon fas fa-solid fa-trash"></i> Delete</button>                    
+                    </form>
+                  </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                                
+                  <div class="mailbox-read-message">
+
+                    <img src="{{ asset($post->image) }}" class="img-fluid">
+
+                    <p>{!! $post->body !!}</p>
+
+                  </div>
+                  <!-- /.mailbox-read-message -->
+                </div>
+                <!-- /.card-body -->
               </div>
-              <!-- /.mailbox-read-message -->
+              <!-- /.card -->
             </div>
-            <!-- /.card-body -->
+            <!-- /.col -->
           </div>
-          <!-- /.card -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+          <!-- /.row -->
+          </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
 
     @include('backend.includes.footer')
         

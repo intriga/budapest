@@ -15,6 +15,10 @@
     <link rel="stylesheet" href="{{ asset('backend/css/fontawesome-free/css/all.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('backend/css/adminlte.min.css') }}">
+    <!-- styles -->
+    <link rel="stylesheet" href="{{ asset('backend/css/style.css') }}">
+    
+    @stack('styles')
 </head>
 <body class="hold-transition sidebar-mini">
 
