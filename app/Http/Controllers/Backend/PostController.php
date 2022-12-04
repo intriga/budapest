@@ -46,12 +46,13 @@ class PostController extends Controller
         $post->slug = $request->input('slug');
         $post->body = $request->input('body');
 
-        //$requestData = $request->all();        
-        $fileName = time().$request->file('image')->getClientOriginalName();
-        $path = $request->file('image')->storeAs('images', $fileName, 'public');
-        $post["image"] = '/storage/'.$path;
-        //dd($request->all());
-        
+        //$requestData = $request->all();   
+        if ($request->allFiles('image')) {     
+            $fileName = time().$request->file('image')->getClientOriginalName();
+            $path = $request->file('image')->storeAs('images', $fileName, 'public');
+            $post["image"] = '/storage/'.$path;
+            //dd($request->all());
+        }
         $post->save();
 
       return redirect('/admin/posts');
@@ -97,30 +98,30 @@ class PostController extends Controller
         $post->slug = $request->input('slug');
         $post->body = $request->input('body');
         $post->image = $request->input('image');
-        // $post->old_image = $request->input('old_image');
+        $post->old_image = $request->input('old_image');
         // dd($request->all());
 
-        if($request->hasFile('image')) {
-            $name = strtolower($request->file('image')->getClientOriginalName());
-            $file_name = $name;
-            $path = $request->file('image')->storeAs('images', $file_name, 'public');
-            $post->image = $file_name;
-            $Image = str_replace('/storage/' . $path, '/', $request->old_image);
-            dd($path);
+        $image = $post->old_image = $request->input('old_image');
+
+        if ($request->allFiles('image')) {
+            !is_null($image) && Storage::delete($image);
+            /*
+            unlink for delete images and substr 
+            substr for remove letters. The letters: storage/images/ 
+            replace substr in case of use on another Operative system
+            */ 
+            unlink(storage_path('app/public/images' . substr($image, 15) ));
+            $fileName = time().$request->file('image')->getClientOriginalName();
+            $files = $request->file('image')->storeAs('images', $fileName, 'public');
+            $post["image"] = '/storage/'.$files;            
             
-            #Using storage
-            if(Storage::exists($Image)){
-                Storage::delete($Image);
-            }
-        }else {
-            $post->image = $request->old_image;
+            $post->save();
+        }else{
+            $post->image = $post->old_image;
+            $post->save();
         }
-        
-        
-        // dd($request->all());
-        $post->save();
 
-        return redirect('/admin/posts');
+        return redirect('/admin/post/' . $id);
     }
 
     /**
@@ -132,7 +133,13 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::find($id);
-        $post->delete();
+        if ($post->image) {
+            $image = $post->image;
+            unlink(storage_path('app/public/images' . substr($image, 15) ));            
+            $post->delete();
+        }else{
+            $post->delete();
+        }
         return redirect('/admin/posts');
     }
 }

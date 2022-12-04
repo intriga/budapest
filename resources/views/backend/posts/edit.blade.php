@@ -50,14 +50,14 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <input id="title" class="form-control" name="title" value="{{ $post->title }}">
-                                        <input id="slug" class="form-control" name="slug"  value="{{ $post->slug }}">
+                                        <input type="hidden" id="slug" class="form-control" name="slug"  value="{{ $post->slug }}">
                                     </div>
                                     
                                     <div class="form-group">
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" id="image" name="image" class="custom-file-input">
-                                                <label class="custom-file-label" for="image" value=""></label>
+                                                <label class="custom-file-label" for="image">{{ $post->image }}</label>
                                             </div>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">Upload</span>
@@ -65,7 +65,7 @@
                                         </div>
                                     </div>
 
-                                    <input type="hidden" id="old_image" name="old_image" value="{{ $post->image }}">
+                                    <input type="hidden" id="old_image" class="form-control" name="old_image" value="{{ $post->image }}">
                                     
 
                                     <div class="form-group">
