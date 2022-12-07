@@ -43,13 +43,22 @@
                         <div class="col-md-12">
                             <div class="card card-primary card-outline">
 
-                            <form method="post" action="{{ url('/admin/post/'.$post->id.'/edit') }}" enctype="multipart/form-data">
+                            <form method="post" action="{{ url('/admin/post/'.$post->slug.'/edit') }}" enctype="multipart/form-data">
                             {{ csrf_field() }}
                                 
                                 <!-- /.card-header -->
                                 <div class="card-body">
                                     <div class="form-group">
                                         <input id="title" class="form-control" name="title" value="{{ $post->title }}">
+                                        @if (count($errors) > 0)
+                                            <div class="alert alert-danger">
+                                                <ul>
+                                                    @foreach ($errors->all() as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endif
                                         <input type="hidden" id="slug" class="form-control" name="slug"  value="{{ $post->slug }}">
                                     </div>
                                     

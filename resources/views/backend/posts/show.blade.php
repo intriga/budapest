@@ -36,10 +36,10 @@
             <div class="col-md-12">
               <div class="card card-primary card-outline">
                 <div class="card-header">
-                  <h3 class="card-title">{!! $post->title !!}</h3>
+                  <h3 class="card-title">{{ $post->title }}</h3>
 
                   <div class="card-tools">
-                    <a href="{{ url('/admin/post/'.$post->id.'/edit') }}" class="btn btn-tool" title="Previous">
+                    <a href="{{ url('/admin/post/'.$post->slug.'/edit') }}" class="btn btn-tool" title="Previous">
                       <button type="submit" class="btn btn-primary"><i class="far fa-envelope"></i> Edit</button>                    
                     </a>
                     <form action="{{ url('/admin/post/'.$post->id) }}" method="post">

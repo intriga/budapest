@@ -99,7 +99,7 @@
                                         </td>
                                         
                                         <td class="mailbox-name">
-                                            <a href="{{ url('admin/post/'.$post->id) }}">{{ $post->title }}</a>
+                                            <a href="{{ url('admin/post/'.$post->slug) }}">{{ $post->title }}</a>
                                         </td>
                                         <!-- <td class="mailbox-subject">{{ $post->body }}
                                         </td> -->

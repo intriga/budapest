@@ -5,7 +5,13 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
+
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
+
 use Illuminate\Support\Facades\Storage;
+
+
 
 class PostController extends Controller
 {
@@ -38,7 +44,7 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
         
         $post = new Post();
@@ -46,9 +52,13 @@ class PostController extends Controller
         $post->slug = $request->input('slug');
         $post->body = $request->input('body');
 
+        $validated = $request->validated();
+
         //$requestData = $request->all();   
         if ($request->allFiles('image')) {     
-            $fileName = time().$request->file('image')->getClientOriginalName();
+            // $fileName = time().$request->file('image')->getClientOriginalName();
+            // $fileName = time().$request->file('image')->hashName();
+            $fileName = $request->file('image')->hashName();
             $path = $request->file('image')->storeAs('images', $fileName, 'public');
             $post["image"] = '/storage/'.$path;
             //dd($request->all());
@@ -64,10 +74,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        $post = Post::find($id);
-        //dd($post);
+        // $post = Post::find($id);
+        $post = Post::where('slug', $slug)->first();
+        // dd($post);
         return view('backend.posts.show', compact('post'));
     }
 
@@ -77,9 +88,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        $post = Post::find($id);
+        // $post = Post::find($id);
+        $post = Post::where('slug', $slug)->first();
         //dd($post);
         return view('backend.posts.edit', compact('post'));
     }
@@ -91,9 +103,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePostRequest $request, $slug)
     {
-        $post = Post::find($id);
+        // $post = Post::find($id);
+        $post = Post::where('slug', $slug)->first();
+
         $post->title = $request->input('title');
         $post->slug = $request->input('slug');
         $post->body = $request->input('body');
@@ -111,7 +125,9 @@ class PostController extends Controller
             replace substr in case of use on another Operative system
             */ 
             unlink(storage_path('app/public/images' . substr($image, 15) ));
-            $fileName = time().$request->file('image')->getClientOriginalName();
+            // $fileName = time().$request->file('image')->getClientOriginalName();
+            // $fileName = time().$request->file('image')->hashName();
+            $fileName = $request->file('image')->hashName();
             $files = $request->file('image')->storeAs('images', $fileName, 'public');
             $post["image"] = '/storage/'.$files;            
             
@@ -121,7 +137,7 @@ class PostController extends Controller
             $post->save();
         }
 
-        return redirect('/admin/post/' . $id);
+        return redirect('/admin/posts/');
     }
 
     /**
