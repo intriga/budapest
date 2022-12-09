@@ -52,8 +52,6 @@ class PostController extends Controller
         $post->slug = $request->input('slug');
         $post->body = $request->input('body');
 
-        $validated = $request->validated();
-
         //$requestData = $request->all();   
         if ($request->allFiles('image')) {     
             // $fileName = time().$request->file('image')->getClientOriginalName();
@@ -117,7 +115,14 @@ class PostController extends Controller
 
         $image = $post->old_image = $request->input('old_image');
 
-        if ($request->allFiles('image')) {
+        if ($request->allFiles('image') && $post->old_image == null) {
+            !is_null($image) && Storage::delete($image);
+            $fileName = $request->file('image')->hashName();
+            $files = $request->file('image')->storeAs('images', $fileName, 'public');
+            $post["image"] = '/storage/'.$files;            
+            
+            $post->save();
+        }elseif ($request->allFiles('image')) {
             !is_null($image) && Storage::delete($image);
             /*
             unlink for delete images and substr 

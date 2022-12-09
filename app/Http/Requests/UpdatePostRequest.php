@@ -34,10 +34,10 @@ class UpdatePostRequest extends FormRequest
         // return $rules;
         
         return [
-            'title' => 'required|unique:posts|max:255',
-            'slug' => 'required|unique:posts,slug',
+            'title' => 'required',
+            'slug' => 'required',
             'body' => 'required',
-            'image' => 'required | image | mimes:jpeg,png,jpg',
+            'image' => 'image | mimes:jpeg,png,jpg',
         ];
     }
 
@@ -45,7 +45,7 @@ class UpdatePostRequest extends FormRequest
     {
         return [
             'title.required' => 'title is required!',
-            // 'slug.required' => 'slug is required!',
+            'slug.required' => 'slug is required!',
             'body.required' => 'content is required!',
             'image' => 'the file must be a image!',
         ];
