@@ -23,7 +23,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <i class="nav-icon fas fa-solid fa-pen"></i>
                         <p>
                             Posts
                             <i class="right fas fa-angle-left"></i>
@@ -37,15 +37,21 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ url('admin/post/create') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add New</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="../../index2.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Dashboard v2</p>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Categories</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="../../index3.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Dashboard v3</p>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tags</p>
                             </a>
                         </li>
                     </ul>
