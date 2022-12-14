@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\PostController;
 use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,5 +46,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->namespace('admin')->group
     Route::get('/category/{slug}', [CategoryController::class, 'show']);
     Route::get('/category/{slug}/edit', [CategoryController::class, 'edit']);      
     Route::post('/category/{slug}/edit', [CategoryController::class, 'update']);      
-    Route::delete('/category/{id}', [CategoryController::class, 'destroy']);  
+    Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
+    
+    // Tags
+    Route::get('/tags', [TagController::class, 'index'])->name('tags'); 
+    Route::get('/tag/create', [TagController::class, 'create']);    
+    Route::post('/tag/', [TagController::class, 'store']); 
+    Route::get('/tag/{slug}', [TagController::class, 'show']);
+    Route::get('/tag/{slug}/edit', [TagController::class, 'edit']);      
+    Route::post('/tag/{slug}/edit', [TagController::class, 'update']);      
+    Route::delete('/tag/{id}', [TagController::class, 'destroy']);  
 });
