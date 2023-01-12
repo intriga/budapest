@@ -5,11 +5,15 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Category;
+use App\Models\Tag;
+use Auth;
 
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -23,6 +27,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::orderBy('id', 'desc')
+            ->where('user_id', auth()->user()->id)
             ->simplePaginate(10);
         // dd($posts);
         return view('backend.posts.index', compact('posts'));
@@ -35,7 +40,11 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('backend.posts.create');
+        $categories = Category::orderBy('id', 'ASC')->pluck('title', 'id');
+        $tags       = Tag::orderBy('title', 'ASC')->get();
+        $user       = auth()->user()->id;
+        // dd($user);
+        return view('backend.posts.create', compact('categories', 'tags', 'user'));
     }
 
     /**
@@ -51,8 +60,10 @@ class PostController extends Controller
         $post->title = $request->input('title');
         $post->slug = $request->input('slug');
         $post->body = $request->input('body');
+        $post->category_id = $request->input('category_id');
+        $post->user_id = $request->input('user_id');
 
-        //$requestData = $request->all();   
+        // dd($request->all());   
         if ($request->allFiles('image')) {     
             // $fileName = time().$request->file('image')->getClientOriginalName();
             // $fileName = time().$request->file('image')->hashName();
@@ -61,9 +72,13 @@ class PostController extends Controller
             $post["image"] = '/storage/'.$path;
             //dd($request->all());
         }
+
+        // TAGS
+        $post->tags()->attach($request->get('tags'));
+
         $post->save();
 
-      return redirect('/admin/posts');
+        return redirect('/admin/posts');
     }
 
     /**
@@ -74,10 +89,15 @@ class PostController extends Controller
      */
     public function show($slug)
     {
-        // $post = Post::find($id);
-        $post = Post::where('slug', $slug)->first();
-        // dd($post);
-        return view('backend.posts.show', compact('post'));
+        $post = DB::table('posts')
+        ->select(DB::raw('posts.*, categories.title as category_title'))
+        ->join('categories', function ($join) use($slug) {
+            $join->on('posts.category_id', '=', 'categories.id')
+                 ->where('posts.slug', '=', $slug);
+        })
+        ->get();
+        
+        return view('backend.posts.show')->with('post', $post);
     }
 
     /**
@@ -90,6 +110,9 @@ class PostController extends Controller
     {
         // $post = Post::find($id);
         $post = Post::where('slug', $slug)->first();
+
+        $categories = Category::orderBy('title', 'ASC')->pluck('title', 'id');
+        $tags       = Tag::orderBy('title', 'ASC')->get();
         //dd($post);
         return view('backend.posts.edit', compact('post'));
     }
@@ -141,6 +164,9 @@ class PostController extends Controller
             $post->image = $post->old_image;
             $post->save();
         }
+
+        // TAGS
+        $post->tags()->sync($request->get('tags'));
 
         return redirect('/admin/posts/');
     }

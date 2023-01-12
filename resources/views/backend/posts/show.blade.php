@@ -35,8 +35,12 @@
               
             <div class="col-md-12">
               <div class="card card-primary card-outline">
+              @foreach ($post as $post)
                 <div class="card-header">
+
+                
                   <h3 class="card-title">{{ $post->title }}</h3>
+                
 
                   <div class="card-tools">
                     <a href="{{ url('/admin/post/'.$post->slug.'/edit') }}" class="btn btn-tool" title="Previous">
@@ -56,12 +60,15 @@
 
                     <img src="{{ asset($post->image) }}" class="img-fluid">
 
+                    <p>Category: {!! $post->category_title !!}</p>
+                    
                     <p>{!! $post->body !!}</p>
 
                   </div>
                   <!-- /.mailbox-read-message -->
                 </div>
                 <!-- /.card-body -->
+                @endforeach
               </div>
               <!-- /.card -->
             </div>

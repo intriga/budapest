@@ -61,6 +61,32 @@
                                         @endif
                                         <input id="slug" class="form-control hidden" name="slug">
                                     </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Select</label>
+                                                <input id="user" class="form-control hidden" name="user_id" value="{{ $user }}">
+                                                <select name="category_id" class="form-control">
+                                                    @foreach ($categories as $category => $value)
+                                                        
+                                                        <option value="{{ $category }}">{{ $value }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Select Disabled</label>
+                                                <select class="form-control" disabled="">
+                                                <option>option 1</option>
+                                                <option>option 2</option>
+                                                <option>option 3</option>
+                                                <option>option 4</option>
+                                                <option>option 5</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <div class="input-group">
                                             <div class="custom-file">
